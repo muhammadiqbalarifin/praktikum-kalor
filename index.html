@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laboratorium Virtual Kalor</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f6f7f9;color:#1d2330;font:16px/1.5 "Segoe UI",Tahoma,Arial,sans-serif}
+main{max-width:760px;margin:0 auto;padding:16px}
+h1{font-size:22px;margin:0}h2{font-size:18px;margin:0 0 8px}
+.sub{color:#5d6677;font-size:14px;margin:2px 0 12px}
+#nav{display:-ms-flexbox;display:flex;overflow-x:auto;margin-bottom:12px}
+#nav button{-ms-flex:1 0 auto;flex:1 0 auto;margin-right:6px;padding:9px 12px;border:1px solid #d9dde5;background:#fff;color:#1d2330;border-radius:10px;font:inherit;font-size:14px;cursor:pointer}
+#nav button.on{background:#1c7ed6;color:#fff;border-color:#1c7ed6}
+.card{background:#fff;border:1px solid #d9dde5;border-radius:14px;padding:14px;margin-bottom:12px}
+.chips{margin:6px 0 6px}
+.chip{display:inline-block;margin:0 6px 6px 0;padding:7px 12px;border:1px solid #d9dde5;border-radius:999px;background:#f6f7f9;color:#1d2330;cursor:pointer;font:inherit;font-size:14px}
+.chip.on{background:#d9480f;color:#fff;border-color:#d9480f}
+.btn{margin:8px 8px 8px 0;padding:9px 14px;border:0;border-radius:10px;background:#1c7ed6;color:#fff;font:inherit;cursor:pointer}
+.btn.alt{background:#f6f7f9;color:#1d2330;border:1px solid #d9dde5}.btn.go{background:#d9480f}
+label{font-size:14px;color:#5d6677}input[type=range]{width:100%}
+svg{width:100%;height:auto;display:block}.box{border:1px solid #d9dde5;border-radius:10px;background:#f6f7f9;margin-top:8px}
+.ro{display:-ms-flexbox;display:flex;margin:8px 0}.ro div{-ms-flex:1 1 0%;flex:1 1 0%;margin-right:8px;background:#f6f7f9;border:1px solid #d9dde5;border-radius:10px;padding:6px 8px;text-align:center;font-size:13px;color:#5d6677}.ro div:last-child{margin-right:0}.ro b{display:block;font-size:17px;color:#1d2330}
+.sc{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{border-bottom:1px solid #d9dde5;padding:5px 6px;text-align:center;white-space:nowrap}th{color:#5d6677}
+.q{margin:12px 0}.q p{margin:0 0 6px;font-weight:600}.q label{display:block;color:#1d2330;padding:4px 0;font-size:15px}
+.fb{font-size:14px;margin-top:4px}.ok{color:#2b8a3e}.bad{color:#c92a2a}.note{font-size:14px;color:#5d6677}
+</style></head><body><main>
+<h1>Laboratorium Virtual Kalor</h1>
+<p class="sub">IPA Kelas VII · Problem Based Learning · pengganti praktikum langsung</p>
+<div id="nav"></div>
+
+<div id="v0">
+<div class="card"><h2>Orientasi masalah 1: pasir dan air laut</h2>
+<p>Pada suatu siang, pasir di pantai terasa sangat panas sehingga kaki sulit menginjaknya sementara air laut terasa lebih sejuk. Padahal keduanya disinari matahari dalam waktu yang sama.</p>
+<p><b>Pertanyaan masalah:</b> Mengapa pasir lebih cepat panas daripada air laut?</p></div>
+<div class="card"><h2>Orientasi masalah 2: celah di rel kereta</h2>
+<p>Pada suatu siang yang terik, Raka berjalan bersama kakeknya menyusuri rel kereta api dekat rumah mereka. Raka memperhatikan ada celah kecil di sambungan antar batang rel.</p>
+<p>“Kek, kenapa relnya tidak dipasang rapat saja? Celah ini pasti membuat kereta berguncang,” tanya Raka.</p>
+<p>Kakek tersenyum dan bercerita tentang rel di kota lain yang dulu dipasang tanpa celah. Pada siang yang sangat panas, rel itu melengkung sehingga kereta harus berhenti. “Coba kamu cari tahu sendiri sebabnya,” kata Kakek.</p>
+<p><b>Pertanyaan masalah:</b> Mengapa sambungan rel kereta api diberi celah? Apa yang terjadi pada rel ketika suhunya naik?</p></div>
+<div class="card"><h2>Rumusan hipotesis</h2>
+<p>Tuliskan dugaanmu di buku, lalu buktikan lewat dua eksperimen virtual:</p>
+<p><b>Eksperimen 1.</b> Memanaskan zat berbeda dengan pemanas 500 W, lalu mencatat kenaikan suhunya (kalor jenis, <i>Q = m · c · ΔT</i>).<br><b>Eksperimen 2.</b> Memanaskan batang logam sepanjang 1 m, lalu mencatat pertambahan panjangnya (pemuaian).</p>
+<button class="btn go" onclick="go(1)">Mulai praktikum</button></div>
+</div>
+
+<div id="v1" style="display:none">
+<div class="card"><h2>Eksperimen 1: kalor dan kenaikan suhu</h2>
+<label>Pilih zat</label><div class="chips" id="zc"></div>
+<label>Massa: <b id="mv"></b> g</label><input type="range" id="ms" min="100" max="500" step="100" value="300" oninput="setM(this.value)" onchange="setM(this.value)">
+<label>Kecepatan waktu</label><div class="chips" id="sc1"></div>
+<div><button class="btn go" id="pb" onclick="toggle()">Mulai</button><button class="btn alt" onclick="reset()">Ulangi</button><button class="btn" onclick="rec1()">Catat data</button></div>
+<div class="box"><svg viewBox="0 0 300 200" id="vis"></svg></div>
+<div class="ro"><div>Waktu<b id="rt"></b></div><div>Suhu<b id="rT"></b></div><div>Kalor Q<b id="rQ"></b></div></div>
+<div class="box"><svg viewBox="0 0 300 150" id="gr"></svg></div>
+<p class="note">Pemanas otomatis mati pada 100 °C. Suhu awal 25 °C. Kecepatan 1× sama dengan waktu sebenarnya. Pilih 5× atau 20× agar pemanasan zat bermassa besar lebih cepat; data tetap dihitung dalam detik simulasi.</p></div>
+<div class="card"><h2>Tabel data</h2><div class="sc"><table><thead><tr><th>Zat</th><th>m (g)</th><th>t (s)</th><th>T (°C)</th><th>ΔT</th><th>Q (J)</th></tr></thead><tbody id="tb1"></tbody></table></div>
+<p class="note" id="st1"></p></div>
+</div>
+
+<div id="v2" style="display:none">
+<div class="card"><h2>Eksperimen 2: pemuaian panjang</h2>
+<label>Pilih batang (panjang awal 1 m pada 30 °C)</label><div class="chips" id="mc"></div>
+<label>Suhu pemanasan: <b id="tv"></b> °C</label><input type="range" id="ts" min="30" max="230" step="10" value="30" oninput="setT(this.value)" onchange="setT(this.value)">
+<div class="box"><svg viewBox="0 0 300 120" id="vis2"></svg></div>
+<div class="ro"><div>ΔT<b id="d1"></b></div><div>Pertambahan panjang<b id="d2"></b></div></div>
+<div><button class="btn" onclick="rec2()">Catat data</button></div>
+<p class="note">Tantangan dari cerita Raka: kira-kira berapa celah yang dibutuhkan jika rel besi sepanjang 12 m naik suhunya dari 30 °C menjadi 60 °C? Gunakan data tabelmu. Gambar diperbesar agar perubahan terlihat. ΔL = α · L₀ · ΔT.</p></div>
+<div class="card"><h2>Tabel data</h2><div class="sc"><table><thead><tr><th>Bahan</th><th>T (°C)</th><th>ΔT</th><th>ΔL (mm)</th></tr></thead><tbody id="tb2"></tbody></table></div><p class="note" id="st2"></p></div>
+</div>
+
+<div id="v3" style="display:none">
+<div class="card"><h2>Analisis dan kesimpulan</h2>
+<p class="note">Gunakan data dari kedua tabel untuk menjawab. Zat dengan kalor jenis kecil cepat panas, zat dengan kalor jenis besar lambat panas. Pemuaian tiap bahan berbeda sesuai koefisien muainya.</p>
+<div id="qs"></div><button class="btn go" onclick="chk()">Periksa jawaban</button><p id="sc" style="font-weight:600"></p></div>
+</div>
+</main>
+<script>
+var Z=[{n:'Air',c:4200,col:'#4aa3df',liq:1},{n:'Minyak',c:2000,col:'#e0b040',liq:1},{n:'Aluminium',c:900,col:'#9aa5b1'},{n:'Besi',c:450,col:'#6b6f76'}];
+var M=[{n:'Aluminium',a:24e-6,col:'#9aa5b1'},{n:'Kuningan',a:19e-6,col:'#c9a227'},{n:'Besi',a:12e-6,col:'#6b6f76'},{n:'Kaca',a:9e-6,col:'#7fc8c8'}];
+var fr=0,P=500,MUT='#5d6677',sp=1,tab=0,z=0,m=300,t=0,T=25,run=false,hist=[[0,25]],rows1=[],mi=0,T2=30,rows2=[],timer=null;
+var tabs=['Masalah','Eksperimen 1','Eksperimen 2','Kesimpulan'];
+var Q=[
+['Dengan massa, tingkat pemanasan, dan waktu pemanasan yang sama. Zat mana yang suhunya naik paling cepat?',['Air','Minyak','Aluminium','Besi'],3,'Besi memiliki kalor jenis terkecil (450 J/kg°C), jadi kalor yang sama menaikkan suhunya paling banyak.'],
+['Mengapa pasir pantai lebih cepat panas daripada air laut?',['Pasir menerima lebih banyak sinar matahari','Kalor jenis pasir lebih kecil daripada air','Air laut tidak menerima kalor','Massa air selalu lebih kecil'],1,'Kalor jenis air sangat besar (4200 J/kg°C), sehingga air butuh banyak kalor untuk naik suhunya.'],
+['Pada Eksperimen 2, bahan mana yang memuai paling panjang untuk kenaikan suhu yang sama?',['Kaca','Besi','Kuningan','Aluminium'],3,'Koefisien muai panjang aluminium paling besar dari keempat bahan.'],
+['Mengapa sambungan rel kereta api diberi celah?',['Agar rel lebih ringan','Agar rel dapat memuai saat panas tanpa melengkung','Agar rel lebih cepat dingin','Agar kereta lebih cepat'],1,'Rel memuai saat panas. Celah memberi ruang agar rel tidak melengkung.']];
+function $(id){return document.getElementById(id)}
+function setSvg(el,s){var d=document.createElement('div');d.innerHTML='<svg xmlns="http://www.w3.org/2000/svg">'+s+'</svg>';while(el.firstChild)el.removeChild(el.firstChild);var c=d.firstChild.childNodes;while(c.length)el.appendChild(c[0])}
+function nav(){var s='',i;for(i=0;i<4;i++)s+='<button class="'+(i==tab?'on':'')+'" onclick="go('+i+')">'+tabs[i]+'</button>';$('nav').innerHTML=s}
+function go(i){var k;tab=i;for(k=0;k<4;k++)$('v'+k).style.display=(k==i?'block':'none');if(i!=1)pause();nav()}
+function chips(){var s='',i;
+ for(i=0;i<Z.length;i++)s+='<button class="chip'+(i==z?' on':'')+'" onclick="z='+i+';reset();chips()">'+Z[i].n+'</button>';$('zc').innerHTML=s;
+ s='';var sps=[1,5,20];for(i=0;i<3;i++)s+='<button class="chip'+(sps[i]==sp?' on':'')+'" onclick="sp='+sps[i]+';chips()">'+sps[i]+'×</button>';$('sc1').innerHTML=s;
+ s='';for(i=0;i<M.length;i++)s+='<button class="chip'+(i==mi?' on':'')+'" onclick="mi='+i+';r2();chips()">'+M[i].n+'</button>';$('mc').innerHTML=s}
+function setM(v){m=+v;reset()}
+function setT(v){T2=+v;r2()}
+function reset(){pause();t=0;T=25;hist=[[0,25]];r1()}
+function pause(){run=false;clearInterval(timer);if($('pb'))$('pb').innerHTML='Mulai'}
+function toggle(){if(run){pause();return}if(T>=100)reset();run=true;$('pb').innerHTML='Jeda';
+ timer=setInterval(function(){t=Math.round((t+0.1*sp)*10)/10;T=Math.min(100,25+P*t/((m/1000)*Z[z].c));hist.push([t,T]);if(T>=100)pause();r1()},100)}
+function r1(){var o=Z[z],h=Math.max(0,(T-20)/80*110),f=(T-25)/75,s='';
+ if(o.liq)s+='<rect x="95" y="100" width="100" height="60" fill="'+o.col+'" opacity=".75"/><path d="M95 50V160H195V50" fill="none" stroke="'+MUT+'" stroke-width="3"/>';
+ else s+='<rect x="105" y="100" width="80" height="60" rx="4" fill="'+o.col+'"/><rect x="105" y="100" width="80" height="60" rx="4" fill="#ff5a1f" opacity="'+Math.max(0,f*.5)+'"/>';
+ s+='<rect x="90" y="162" width="110" height="6" fill="'+MUT+'"/>';
+ if(run){fr++;var fy=1+0.18*Math.sin(fr*1.3),fx=1+0.08*Math.sin(fr*2.1),tr='translate(150 178) scale('+fx.toFixed(3)+' '+fy.toFixed(3)+') translate(-150 -178)';
+  s+='<path transform="'+tr+'" d="M150 178c-14-8-12-18-4-24 0 8 6 8 8 2 4 6 14 12-4 22z" fill="#ff7a1a"/><path transform="'+tr+'" d="M150 178c-7-4-6-9-2-12 0 4 3 4 4 1 2 3 7 6-2 11z" fill="#ffd43b"/>'}
+ s+='<text x="145" y="195" text-anchor="middle" font-size="11" fill="'+MUT+'">'+o.n+', '+m+' g</text><rect x="235" y="30" width="14" height="115" rx="7" fill="none" stroke="'+MUT+'" stroke-width="2"/><rect x="238" y="'+(142-h)+'" width="8" height="'+h+'" fill="#e03131"/><circle cx="242" cy="150" r="9" fill="#e03131"/>';
+ setSvg($('vis'),s);
+ $('mv').innerHTML=m;$('rt').innerHTML=t.toFixed(1)+' s';$('rT').innerHTML=T.toFixed(1)+' °C';$('rQ').innerHTML=Math.round(P*t)+' J';
+ var xm=Math.max(10,t*1.1),pts=[],i;
+ for(i=0;i<hist.length;i++)pts.push((35+hist[i][0]/xm*255).toFixed(1)+','+(130-(hist[i][1]-20)/80*115).toFixed(1));
+ setSvg($('gr'),'<line x1="35" y1="130" x2="290" y2="130" stroke="'+MUT+'"/><line x1="35" y1="15" x2="35" y2="130" stroke="'+MUT+'"/><text x="162" y="146" text-anchor="middle" font-size="10" fill="'+MUT+'">waktu (s) 0–'+Math.round(xm)+'</text><text x="6" y="22" font-size="10" fill="'+MUT+'">100</text><text x="12" y="132" font-size="10" fill="'+MUT+'">20</text><polyline fill="none" stroke="#d9480f" stroke-width="2.5" points="'+pts.join(' ')+'"/>');
+ tb1()}
+function rec1(){if(t==0)return;rows1.push([Z[z].n,m,t.toFixed(1),T.toFixed(1),(T-25).toFixed(1),Math.round(P*t)]);tb1()}
+function trs(rows,n,msg){var s='',i,j;for(i=0;i<rows.length;i++){s+='<tr>';for(j=0;j<rows[i].length;j++)s+='<td>'+rows[i][j]+'</td>';s+='</tr>'}return s||'<tr><td colspan="'+n+'" class="note">'+msg+'</td></tr>'}
+function uniq(rows){var o={},k=0,i;for(i=0;i<rows.length;i++)if(!o[rows[i][0]]){o[rows[i][0]]=1;k++}return k}
+function tb1(){$('tb1').innerHTML=trs(rows1,6,'Belum ada data. Jalankan pemanas, lalu tekan Catat data.');var k=uniq(rows1);
+ $('st1').innerHTML=k>=3?'Data 3 zat atau lebih sudah tercatat. Bandingkan ΔT tiap zat untuk waktu dan massa yang sama.':'Catat minimal 3 zat berbeda (sekarang '+k+'). Gunakan massa yang sama agar sebanding.'}
+function r2(){var o=M[mi],d=T2-30,dl=o.a*d*1000,w=200+dl*20;
+ $('tv').innerHTML=T2;$('d1').innerHTML=d+' °C';$('d2').innerHTML=dl.toFixed(2)+' mm';
+ setSvg($('vis2'),'<rect x="20" y="20" width="12" height="70" fill="'+MUT+'"/><rect x="32" y="45" width="'+w+'" height="20" fill="'+o.col+'"/><rect x="32" y="45" width="'+w+'" height="20" fill="#ff5a1f" opacity="'+(d/200*.45)+'"/><line x1="232" y1="30" x2="232" y2="100" stroke="'+MUT+'" stroke-dasharray="4 3"/><text x="232" y="112" text-anchor="middle" font-size="10" fill="'+MUT+'">panjang awal</text><text x="40" y="38" font-size="11" fill="#1d2330">'+o.n+'</text>');
+ tb2()}
+function rec2(){var o=M[mi],d=T2-30;if(!d)return;rows2.push([o.n,T2,d,(o.a*d*1000).toFixed(2)]);tb2()}
+function tb2(){$('tb2').innerHTML=trs(rows2,4,'Belum ada data. Naikkan suhu, lalu tekan Catat data.');var k=uniq(rows2);
+ $('st2').innerHTML=k>=3?'Misi selesai: data 3 bahan atau lebih sudah dicatat. Bandingkan ΔL pada suhu yang sama.':'Misi: catat data minimal 3 bahan pada suhu yang sama (sekarang '+k+').'}
+function chk(){var s=0,i;for(i=0;i<Q.length;i++){var v=document.querySelector('input[name=q'+i+']:checked'),f=$('f'+i);
+ if(!v){f.className='fb';f.innerHTML='Belum dijawab.';continue}
+ if(+v.value==Q[i][2]){s++;f.className='fb ok';f.innerHTML='Benar. '+Q[i][3]}else{f.className='fb bad';f.innerHTML='Belum tepat. Coba ulangi eksperimen, lalu pikirkan lagi.'}}
+ $('sc').innerHTML='Skor: '+s+' dari '+Q.length+(s==Q.length?'. Hebat, kamu menguasai konsepnya!':'')}
+(function(){var s='',i,j;for(i=0;i<Q.length;i++){s+='<div class="q"><p>'+(i+1)+'. '+Q[i][0]+'</p>';for(j=0;j<Q[i][1].length;j++)s+='<label><input type="radio" name="q'+i+'" value="'+j+'"> '+Q[i][1][j]+'</label>';s+='<div class="fb" id="f'+i+'"></div></div>'}$('qs').innerHTML=s})();
+nav();chips();r1();r2();
+</script></body></html>
